@@ -4,21 +4,11 @@ events=$1
 # monitor_dir=$2
 # monitor_file=$3
 
-export PATH="/data/adb/magisk:/data/adb/ksu/bin:/data/adb/ap/bin:$PATH:/system/bin"
-
-va1=$(getprop ro.build.version.release)
-va2="11"
-if [ "$va1" -ge "$va2" ]; then
-  IPV="iptables -w 100"
-  IP6V="ip6tables -w 100"
-else
-  IPV="iptables"
-  IP6V="ip6tables"
-fi
+export PATH=$PATH:"/system/bin"
 
 iptables="${IPV}"
 ip6tables="${IP6V}"
-logs="/data/adb/box/run"
+logs="/opt/bfl/box/run"
 
 rules_add() {
   date > "${logs}/net.log"
@@ -39,7 +29,7 @@ rules_add() {
 }
 
 if [ "$events" = "w" ]; then
-  if [ -f "/data/adb/box/run/box.pid" ]; then
+  if [ -f "/opt/bfl/box/run/box.pid" ]; then
     rules_add
   fi
 fi
